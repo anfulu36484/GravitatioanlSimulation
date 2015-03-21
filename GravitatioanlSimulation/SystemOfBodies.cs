@@ -35,7 +35,7 @@ namespace GravitatioanlSimulation
             {
                 while (true)
                 {
-                    //Thread.Sleep(2);
+                    Thread.Sleep(2);
                     double[] data = _solver.Solve();
                     for (int i = 0; i < _celestialObjects.Length; i++)
                     {
