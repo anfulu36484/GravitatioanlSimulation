@@ -8,7 +8,7 @@ namespace GravitatioanlSimulation
 {
     internal class Function
     {
-        private const double G = 6.6719199999999999e-10;
+        public double G = 6.6719199999999999e-10;
 
         private CelestialObject[] obj;
 

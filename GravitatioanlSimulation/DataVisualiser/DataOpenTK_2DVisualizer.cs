@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using GravitatioanlSimulation.DataVisualiser;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
@@ -10,18 +11,9 @@ using Tao.OpenGl;
 
 namespace GravitatioanlSimulation
 {
-    class DataOpenTKVisualizer : GameWindow
+    class DataOpenTK_2DVisualizer : OpenTKVisualiser
     {
-        private CelestialObject[] _celestialObjects;
-
-
-        /// <summary>Creates a 800x600 window with the specified title.</summary>
-        public DataOpenTKVisualizer()
-            : base(1200, 1000, GraphicsMode.Default, "Gravitatioanl Simulation")
-        {
-            VSync = VSyncMode.On;
-        }
-
+  
         /// <summary>Load resources here.</summary>
         /// <param name="e">Not used.</param>
         protected override void OnLoad(EventArgs e)
@@ -54,10 +46,6 @@ namespace GravitatioanlSimulation
         }
 
 
-        public void GetData(CelestialObject[] celestialObjects)
-        {
-            _celestialObjects = celestialObjects;
-        }
 
 
         /// <summary>

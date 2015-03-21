@@ -58,7 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataOpenTKVisualizer.cs" />
+    <Compile Include="DataVisualiser\DataOpenTK_2DVisualizer.cs" />
+    <Compile Include="DataVisualiser\DataOpenTK_3DVisualiser_Sphere.cs" />
+    <Compile Include="DataVisualiser\DataOpenTK_3DVisualiser.cs" />
+    <Compile Include="DataVisualiser\OpenTKVisualiser.cs" />
+    <Compile Include="Solver\EulerMethodWithBorders.cs" />
     <Compile Include="Solver\EulerMethod.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="CelestialObject.cs" />
