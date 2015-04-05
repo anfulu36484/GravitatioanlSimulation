@@ -10,7 +10,7 @@ namespace GravitatioanlSimulation.DataVisualiser
 {
     abstract class OpenTKVisualiser:GameWindow
     {
-        /// <summary>Creates a 800x600 window with the specified title.</summary>
+        /// <summary>Creates a 1200x1000 window with the specified title.</summary>
         public OpenTKVisualiser()
             : base(1200, 1000, GraphicsMode.Default, "Gravitatioanl Simulation")
         {

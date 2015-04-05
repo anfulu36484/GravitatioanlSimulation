@@ -59,9 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataVisualiser\DataOpenTK_2DVisualizer.cs" />
+    <Compile Include="DataVisualiser\DataOpenTK_3DVisualiser_Fast.cs" />
     <Compile Include="DataVisualiser\DataOpenTK_3DVisualiser_Sphere.cs" />
     <Compile Include="DataVisualiser\DataOpenTK_3DVisualiser.cs" />
     <Compile Include="DataVisualiser\OpenTKVisualiser.cs" />
+    <Compile Include="FastFunction.cs" />
     <Compile Include="Solver\EulerMethodWithBorders.cs" />
     <Compile Include="Solver\EulerMethod.cs" />
     <Compile Include="Function.cs" />

@@ -12,9 +12,22 @@ using OpenTK.Input;
 
 namespace GravitatioanlSimulation
 {
-    class DataOpenTK_3DVisualiser : OpenTKVisualiser
+    class DataOpenTK_3DVisualiser_Fast : GameWindow
 
     {
+        /// <summary>Creates a 1200x1000 window with the specified title.</summary>
+        public DataOpenTK_3DVisualiser_Fast()
+            : base(1200, 1000, GraphicsMode.Default, "Gravitatioanl Simulation")
+        {
+            VSync = VSyncMode.On;
+        }
+
+        private FastFunction _fastFunction;
+
+        public void GetData(FastFunction fastFunction)
+        {
+            _fastFunction = fastFunction;
+        }
 
 
         /// <summary>Load resources here.</summary>
@@ -78,16 +91,16 @@ namespace GravitatioanlSimulation
 
 
 
-            if (_celestialObjects != null)
+            if (_fastFunction != null)
             {
 
-                for (int i = 0; i < _celestialObjects.Length; i++)
+                for (int i = 0; i < _fastFunction.length; i++)
                 {
-                    GL.Color3(_celestialObjects[i].Color);
+                    GL.Color3(_fastFunction.color[i]);
                     GL.Vertex3(
-                        _celestialObjects[i].Position[0] /*+ 600*/,
-                        _celestialObjects[i].Position[1] /*+ 600*/, 
-                        _celestialObjects[i].Position[2] /*+ 600*/);
+                        _fastFunction.position_x[i] /*+ 600*/,
+                        _fastFunction.position_y[i] /*+ 600*/,
+                        _fastFunction.position_z[i] /*+ 600*/);
                    // Debug.WriteLine(_celestialObjects[i].Position[0]);
                 }
             }

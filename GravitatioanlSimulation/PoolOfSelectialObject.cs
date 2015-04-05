@@ -33,5 +33,8 @@ namespace GravitatioanlSimulation
             }
             _objects.Add(celestialObject);
         }
+
+
+
     }
 }

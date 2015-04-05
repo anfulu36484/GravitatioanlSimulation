@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DotNumerics.ODE;
 using DotNumerics.ODE.Radau5;
@@ -16,7 +17,7 @@ namespace GravitatioanlSimulation
 
         static void Main(string[] args)
         {
-            Test10();
+            Test11();
     
             Console.Read();
         }
@@ -485,6 +486,75 @@ namespace GravitatioanlSimulation
             //systemOfBodies.action = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_3DVisualizer.Run(50);
+
+        }
+
+
+        //3d + Быстрая функция
+        static void Test11()
+        {
+            CelestialObject sun = new CelestialObject(5E8, new double[] { 0, 0, 0 }, new double[] { 0, 0, 0 }, Color.OrangeRed);
+            PoolOfSelectialObject pool = new PoolOfSelectialObject();
+
+            pool.Add(sun);
+
+            Random random = new Random();
+
+
+
+
+            for (int i = 0; i < 20; i++)
+            {
+
+                pool.Add(new CelestialObject(random.Next(50, 100),
+                    new double[]
+                    { 
+                    RandomSumbol(random) * random.Next(1, 300),
+                    RandomSumbol(random) * random.Next(1, 300),
+                    RandomSumbol(random) * random.Next(1, 300) 
+                    },
+                    new double[]
+                    {
+                        0, 
+                        0,
+                        0
+                    }, GetRandomColor(random)));
+            }
+
+
+            /*FastFunction fastFunction = new FastFunction(
+                pool.Objects.Select(n=>(float)n.Velocity[0]).ToArray(),
+                pool.Objects.Select(n =>(float) n.Velocity[1]).ToArray(),
+                pool.Objects.Select(n=>(float)n.Velocity[2]).ToArray(),
+                pool.Objects.Select(n => (float)n.Position[0]).ToArray(),
+                pool.Objects.Select(n => (float)n.Position[1]).ToArray(),
+                pool.Objects.Select(n => (float)n.Position[2]).ToArray(),
+                pool.Objects.Select(n => (float)n.Mass).ToArray(),
+                pool.Objects.Select(n => n.Color).ToArray(),
+                6.6719199999999999e-10f,
+                0.01f);*/
+
+            FastFunction fastFunction = new FastFunction(
+                new float[]{0.1f,0.2f,0.01f},
+                new float[] { 0.01f, 0.1f, 0.1f },
+                new float[] { 0.01f, 0.01f, 0.1f },
+                new float[] { 10, 20, 20 },
+                new float[] { 40, 60,10 },
+                new float[] { 100, 300,40 },
+                new float[] { 10, 20,60 },
+                new Color[]{Color.BlueViolet,Color.Brown, Color.Blue}, 
+                6.6719199999999999e-10f,
+                0.01f);
+
+
+            DataOpenTK_3DVisualiser_Fast dataOpenTk_3DVisualiserFast = new DataOpenTK_3DVisualiser_Fast();
+
+            //fastFunction.action = dataOpenTk_3DVisualiserFast.GetData;
+
+            Thread thread = new Thread(fastFunction.EulerMethodRun);
+            thread.Start();
+
+            dataOpenTk_3DVisualiserFast.Run(50);
 
         }
     }
