@@ -17,7 +17,7 @@ namespace GravitatioanlSimulation
 
         static void Main(string[] args)
         {
-            Test11();
+            Test7();
     
             Console.Read();
         }
@@ -293,7 +293,7 @@ namespace GravitatioanlSimulation
 
             Random random = new Random();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 500; i++)
             {
                 pool.Add(new CelestialObject(random.Next(50, 100),
                     new double[]
@@ -535,13 +535,13 @@ namespace GravitatioanlSimulation
                 0.01f);*/
 
             FastFunction fastFunction = new FastFunction(
-                new float[]{0.1f,0.2f,0.01f},
-                new float[] { 0.01f, 0.1f, 0.1f },
-                new float[] { 0.01f, 0.01f, 0.1f },
-                new float[] { 10, 20, 20 },
-                new float[] { 40, 60,10 },
-                new float[] { 100, 300,40 },
-                new float[] { 10, 20,60 },
+                new float[]{0.1f,0.2f},
+                new float[] { 0.01f, 0.1f},
+                new float[] { 0.01f, 0.01f },
+                new float[] { 10, 20 },
+                new float[] { 40, 60 },
+                new float[] { 100, 300 },
+                new float[] { 10, 20},
                 new Color[]{Color.BlueViolet,Color.Brown, Color.Blue}, 
                 6.6719199999999999e-10f,
                 0.01f);
