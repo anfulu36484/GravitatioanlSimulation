@@ -30,6 +30,8 @@ namespace GravitatioanlSimulation
         }
 
 
+
+
         /// <summary>Load resources here.</summary>
         /// <param name="e">Not used.</param>
         protected override void OnLoad(EventArgs e)
@@ -69,6 +71,22 @@ namespace GravitatioanlSimulation
                 Exit();
         }
 
+
+        void GetMaxCoordinates(ref float Xmax, ref float Ymax, ref float Zmax )
+        {
+            
+            for (int i = 0; i < _fastFunction.CountOfObjects; i++)
+            {
+                if (Math.Abs(_fastFunction.Rx_1[i]) > Xmax)
+                    Xmax = Math.Abs(_fastFunction.Rx_1[i]);
+                if (Math.Abs(_fastFunction.Ry_1[i]) > Ymax)
+                    Ymax = Math.Abs(_fastFunction.Ry_1[i]);
+                if (Math.Abs(_fastFunction.Rz_1[i]) > Zmax)
+                    Zmax = Math.Abs(_fastFunction.Rz_1[i]);
+            }
+        }
+
+
         /// <summary>
         /// Called when it is time to render the next frame. Add your rendering code here.
         /// </summary>
@@ -85,7 +103,7 @@ namespace GravitatioanlSimulation
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
 
-            GL.PointSize(1);
+            GL.PointSize(3);
 
             GL.Begin(BeginMode.Points);
 
@@ -93,14 +111,16 @@ namespace GravitatioanlSimulation
 
             if (_fastFunction != null)
             {
+                float Xmax = 0, Ymax = 0, Zmax = 0;
+                GetMaxCoordinates(ref Xmax, ref Ymax, ref Zmax);
 
-                for (int i = 0; i < _fastFunction.length; i++)
+                for (int i = 0; i < _fastFunction.CountOfObjects; i++)
                 {
                     GL.Color3(_fastFunction.color[i]);
                     GL.Vertex3(
-                        _fastFunction.position_x[i] /*+ 600*/,
-                        _fastFunction.position_y[i] /*+ 600*/,
-                        _fastFunction.position_z[i] /*+ 600*/);
+                        _fastFunction.Rx_1[i] * (Width/*+400*/) / Xmax /*+ 600*/,
+                        _fastFunction.Ry_1[i] * (Height/*+400*/) / Ymax/*+ 600*/,
+                        _fastFunction.Rz_1[i] * (Width/*+400*/) /Zmax /*+ 600*/);
                    // Debug.WriteLine(_celestialObjects[i].Position[0]);
                 }
             }

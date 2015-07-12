@@ -10,28 +10,39 @@ namespace GravitatioanlSimulation
 {
     class FastFunction
     {
-        public float[] velocity_x;
-        public float[] velocity_y;
-        public float[] velocity_z;
+        //velocity  i
+        float[] Vx_1; 
+        float[] Vy_1;
+        float[] Vz_1;
 
-        public float[] position_x;
-        public float[] position_y;
-        public float[] position_z;
+        //position i
+        public float[] Rx_1; 
+        public float[] Ry_1;
+        public float[] Rz_1;
 
+        //velocity i + 1
+        float[] Vx_2;
+        float[] Vy_2;
+        float[] Vz_2;
 
-        public float[] temp_velocity_x;
-        public float[] temp_velocity_y;
-        public float[] temp_velocity_z;
+        //position i + 1
+        float[] Rx_2; 
+        float[] Ry_2;
+        float[] Rz_2;
 
-        public float[] temp_position_x;
-        public float[] temp_position_y;
-        public float[] temp_position_z;
+        /// <summary>
+        /// Безразмерная величина, показывающая во сколько раз масса объекта отличается от массы солнца
+        /// </summary>
+        readonly float[] k;
 
-
-        private readonly float[] mass;
         public readonly Color[] color;
-        private readonly float G;
-        public readonly int length;
+
+        /// <summary>
+        /// S = масса солнца  * гравитационную постоянную (G)
+        /// </summary>
+        private readonly float S;
+
+        public readonly int CountOfObjects;
 
         private float dt;
 
@@ -41,172 +52,105 @@ namespace GravitatioanlSimulation
             float[] position_x,
             float[] position_y,
             float[] position_z,
-            float[] mass,
+            float[] k,
             Color[] color,
-            float G,
+            float S,
             float dt)
         {
-            this.velocity_x = velocity_x;
-            this.velocity_y = velocity_y;
-            this.velocity_z = velocity_z;
-            this.position_x = position_x;
-            this.position_y = position_y;
-            this.position_z = position_z;
-            this.mass = mass;
+            Vx_1 = velocity_x;
+            Vy_1 = velocity_y;
+            Vz_1 = velocity_z;
+            Rx_1 = position_x;
+            Ry_1 = position_y;
+            Rz_1 = position_z;
+            this.k = k;
             this.color = color;
-            this.G = G;
+            this.S = S;
             this.dt = dt;
-            length = velocity_x.Length;
+            CountOfObjects = velocity_x.Length;
 
 
-            temp_position_x = new float[length];
-            temp_position_y = new float[length];
-            temp_position_z = new float[length];
+            Rx_2 = new float[CountOfObjects];
+            Ry_2 = new float[CountOfObjects];
+            Rz_2 = new float[CountOfObjects];
 
-            temp_velocity_x = new float[length];
-            temp_velocity_y = new float[length];
-            temp_velocity_z = new float[length];
+            Vx_2 = new float[CountOfObjects];
+            Vy_2 = new float[CountOfObjects];
+            Vz_2 = new float[CountOfObjects];
 
         }
 
 
-        float GetRij(int i, int j)
+        void SolvePosition(int i)
         {
-            double outputRij = 0;
-
-            outputRij += Math.Pow(position_x[j] - position_x[i], 2);
-            outputRij += Math.Pow(position_y[j] - position_y[i], 2);
-            outputRij += Math.Pow(position_z[j] - position_z[i], 2);
-
-            float temp = (float) Math.Sqrt(outputRij);
-            if( Double.IsNaN(temp))
-                throw new Exception();
-
-            return (float)Math.Sqrt(outputRij);
+            Rx_2[i] = Rx_1[i] + Vx_2[i]*dt;
+            Ry_2[i] = Ry_1[i] + Vy_2[i]*dt;
+            Rz_2[i] = Rz_1[i] + Vz_2[i]*dt;
         }
 
-        float CalcVelocity_x(int numberOfObject)
+
+        void SolveVelocity(int i)
         {
-            float velocity = 0;
-            for (int j = 0; j < length; j++)
+            float sumX = 0, sumY = 0, sumZ = 0;
+
+            for (int j = 0; j < CountOfObjects; j++)
             {
-                if (j == numberOfObject)
-                    continue;
-                float rij = GetRij(numberOfObject, j);
-                velocity += mass[j] * (position_x[j] - position_x[numberOfObject]) / (float)Math.Pow(rij, 3);
-            }
+                if (i != j)
+                {
+                    float Rx_ij = Rx_1[j] - Rx_1[i];
+                    float Ry_ij = Ry_1[j] - Ry_1[i];
+                    float Rz_ij = Rz_1[j] - Rz_1[i];
 
-            return G * velocity;
+                    float denominator = (float) Math.Pow(Rx_ij*Rx_ij + Ry_ij*Ry_ij + Rz_ij*Rz_ij, 1.5);
+
+                    sumX += k[j] * Rx_ij / denominator;
+                    sumY += k[j] * Ry_ij / denominator;
+                    sumZ += k[j] * Rz_ij / denominator;
+                }
+            }
+            Vx_2[i] = Vx_1[i] + S*sumX;
+            Vy_2[i] = Vy_2[i] + S*sumY;
+            Vz_2[i] = Vz_2[i] + S*sumZ;
+
         }
 
-        float CalcVelocity_y(int numberOfObject)
-        {
-            float velocity = 0;
-            for (int j = 0; j < length; j++)
-            {
-                if (j == numberOfObject)
-                    continue;
-                float rij = GetRij(numberOfObject, j);
-
-                if (Double.IsNaN(position_y[j] - position_y[numberOfObject]))
-                    throw new Exception();
-                if (Double.IsNaN(mass[j] * (position_y[j] - position_y[numberOfObject]) / (float)Math.Pow(rij, 3)))
-                    throw new Exception();
-                velocity += mass[j] * (position_y[j] - position_y[numberOfObject]) / (float)Math.Pow(rij, 3);
-            }
-            if ((Double.IsNaN(G * velocity)))
-                throw new Exception();
-            return G * velocity;
-        }
-
-        float CalcVelocity_z(int numberOfObject)
-        {
-            float velocity = 0;
-            for (int j = 0; j < length; j++)
-            {
-                if (j == numberOfObject)
-                    continue;
-                float rij = GetRij(numberOfObject, j);
-                velocity += mass[j] * (position_z[j] - position_z[numberOfObject]) / (float)Math.Pow(rij, 3);
-            }
-            return G * velocity;
-        }
-
-        public Action<FastFunction> action;
-
-
-
-
+  
+        public Action<FastFunction> Update;
 
 
         void Solve()
         {
 
-
-            for (int numberOfObject = 0; numberOfObject < length; numberOfObject++)
+            for (int i = 0; i < CountOfObjects; i++)
             {
-
-                temp_position_x[numberOfObject] = velocity_x[numberOfObject];
-                if (Double.IsNaN(position_x[numberOfObject]))
-                    throw new Exception();
-               
-                temp_position_y[numberOfObject] = velocity_y[numberOfObject];
-                temp_position_z[numberOfObject] = velocity_z[numberOfObject];
-
-                if (Double.IsNaN(position_y[numberOfObject]))
-                    throw new Exception();
-                if (Double.IsNaN(position_z[numberOfObject]))
-                    throw new Exception();
-
-                temp_velocity_x[numberOfObject] = CalcVelocity_x(numberOfObject);
-                temp_velocity_y[numberOfObject] = CalcVelocity_y(numberOfObject);
-                temp_velocity_z[numberOfObject] = CalcVelocity_z(numberOfObject);
-
-                if (Double.IsNaN(position_y[numberOfObject]))
-                    throw new Exception();
-                if (Double.IsNaN(position_z[numberOfObject]))
-                    throw new Exception();
-
+                SolveVelocity(i);
+                SolvePosition(i);
             }
 
-            
-            temp_velocity_x.CopyTo(velocity_x, 0);
-            temp_velocity_y.CopyTo(velocity_y,0);
-            temp_velocity_z.CopyTo(velocity_z,0);
-
-            temp_position_x.CopyTo(position_x,0);
-            temp_position_y.CopyTo(position_y,0);
-            temp_position_z.CopyTo(position_z,0);
         }
 
         public void EulerMethodRun()
         {
+            int x = 0;
             while (true)
             {
-                //action(this);
-                Thread.Sleep(2);
+                Update(this);
+                //Thread.Sleep(2);
 
                 Solve();
 
-                for (int numberOfObject = 0; numberOfObject < length; numberOfObject++)
-                {
-                    position_x[numberOfObject] *= dt;
-                    if (Double.IsNaN(position_x[numberOfObject]))
-                        throw new Exception();
-                    position_y[numberOfObject] *= dt;
-                    if (Double.IsNaN(position_y[numberOfObject]))
-                        throw new Exception();
-                    position_z[numberOfObject] *= dt;
+                Vx_2.CopyTo(Vx_1, 0);
+                Vy_2.CopyTo(Vy_1, 0);
+                Vz_2.CopyTo(Vz_1, 0);
 
-                    velocity_x[numberOfObject] *= dt;
-                    velocity_y[numberOfObject] *= dt;
-                    velocity_z[numberOfObject] *= dt;
-                }
+                Rx_2.CopyTo(Rx_1, 0);
+                Ry_2.CopyTo(Ry_1, 0);
+                Rz_2.CopyTo(Rz_1, 0);
+                Console.WriteLine(Vx_1[5]);
+                x++;
             }
-            
+  
         }
-
-        
 
     }
 }

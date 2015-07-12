@@ -17,7 +17,7 @@ namespace GravitatioanlSimulation
 
         static void Main(string[] args)
         {
-            Test7();
+            Test11();
     
             Console.Read();
         }
@@ -66,7 +66,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_2DVisualizer dataOpenTk_2DVisualizer = new DataOpenTK_2DVisualizer();
 
             systemOfBodies.action = dataOpenTk_2DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_2DVisualizer.Run(50);
             
@@ -120,7 +120,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_2DVisualizer dataOpenTk_2DVisualizer = new DataOpenTK_2DVisualizer();
 
             systemOfBodies.action = dataOpenTk_2DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_2DVisualizer.Run(50);
 
@@ -164,7 +164,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_2DVisualizer dataOpenTk_2DVisualizer = new DataOpenTK_2DVisualizer();
 
             systemOfBodies.action = dataOpenTk_2DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_2DVisualizer.Run(50);
 
@@ -201,7 +201,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_2DVisualizer dataOpenTk_2DVisualizer = new DataOpenTK_2DVisualizer();
 
             systemOfBodies.action = dataOpenTk_2DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_2DVisualizer.Run(50);
 
@@ -276,7 +276,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_2DVisualizer dataOpenTk_2DVisualizer = new DataOpenTK_2DVisualizer();
 
             systemOfBodies.action = dataOpenTk_2DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_2DVisualizer.Run(50);
 
@@ -318,7 +318,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_3DVisualiser dataOpenTk_3DVisualizer = new DataOpenTK_3DVisualiser();
 
             systemOfBodies.action = dataOpenTk_3DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_3DVisualizer.Run(50);
 
@@ -365,7 +365,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_3DVisualiser dataOpenTk_3DVisualizer = new DataOpenTK_3DVisualiser();
 
             systemOfBodies.action = dataOpenTk_3DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_3DVisualizer.Run(50);
 
@@ -415,7 +415,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_3DVisualiser dataOpenTk_3DVisualizer = new DataOpenTK_3DVisualiser();
 
             systemOfBodies.action = dataOpenTk_3DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_3DVisualizer.Run(50);
 
@@ -483,7 +483,7 @@ namespace GravitatioanlSimulation
             DataOpenTK_3DVisualiser dataOpenTk_3DVisualizer = new DataOpenTK_3DVisualiser();
 
             systemOfBodies.action = dataOpenTk_3DVisualizer.GetData;
-            //systemOfBodies.action = GetData;
+            //systemOfBodies.Update = GetData;
             systemOfBodies.UpdatePositionOfObjects();
             dataOpenTk_3DVisualizer.Run(50);
 
@@ -493,10 +493,18 @@ namespace GravitatioanlSimulation
         //3d + Быстрая функция
         static void Test11()
         {
-            CelestialObject sun = new CelestialObject(5E8, new double[] { 0, 0, 0 }, new double[] { 0, 0, 0 }, Color.OrangeRed);
+            CelestialObject sun = new CelestialObject(1000, new double[] { 0, 0, 0 }, new double[] { 1e3, -1e2, -1e3 }, Color.Crimson);
+
+            CelestialObject sun2 = new CelestialObject(0.001, new double[] { 500, -400, 700 }, new double[] { -1e3, 1e2, -1e3 }, Color.Aqua);
+
+            CelestialObject sun3 = new CelestialObject(0.005, new double[] { 120, 300, 400 }, new double[] { 1e1, 1e5, -1e3 }, Color.Coral);
+
             PoolOfSelectialObject pool = new PoolOfSelectialObject();
 
             pool.Add(sun);
+            pool.Add(sun2);
+            pool.Add(sun3);
+
 
             Random random = new Random();
 
@@ -506,7 +514,7 @@ namespace GravitatioanlSimulation
             for (int i = 0; i < 20; i++)
             {
 
-                pool.Add(new CelestialObject(random.Next(50, 100),
+                pool.Add(new CelestialObject(random.Next(50, 100)*0.001,
                     new double[]
                     { 
                     RandomSumbol(random) * random.Next(1, 300),
@@ -515,14 +523,14 @@ namespace GravitatioanlSimulation
                     },
                     new double[]
                     {
-                        0, 
-                        0,
-                        0
+                        RandomSumbol(random) *1e4, 
+                        RandomSumbol(random) *1e6,
+                        RandomSumbol(random) *1e6
                     }, GetRandomColor(random)));
             }
 
 
-            /*FastFunction fastFunction = new FastFunction(
+            FastFunction fastFunction = new FastFunction(
                 pool.Objects.Select(n=>(float)n.Velocity[0]).ToArray(),
                 pool.Objects.Select(n =>(float) n.Velocity[1]).ToArray(),
                 pool.Objects.Select(n=>(float)n.Velocity[2]).ToArray(),
@@ -531,10 +539,10 @@ namespace GravitatioanlSimulation
                 pool.Objects.Select(n => (float)n.Position[2]).ToArray(),
                 pool.Objects.Select(n => (float)n.Mass).ToArray(),
                 pool.Objects.Select(n => n.Color).ToArray(),
-                6.6719199999999999e-10f,
-                0.01f);*/
+                1.327e20f,
+                1e1f);
 
-            FastFunction fastFunction = new FastFunction(
+            /*FastFunction fastFunction = new FastFunction(
                 new float[]{0.1f,0.2f},
                 new float[] { 0.01f, 0.1f},
                 new float[] { 0.01f, 0.01f },
@@ -544,18 +552,28 @@ namespace GravitatioanlSimulation
                 new float[] { 10, 20},
                 new Color[]{Color.BlueViolet,Color.Brown, Color.Blue}, 
                 6.6719199999999999e-10f,
-                0.01f);
+                0.01f);*/
 
-
+Stopwatch sw = new Stopwatch();
+            sw.Start();
             DataOpenTK_3DVisualiser_Fast dataOpenTk_3DVisualiserFast = new DataOpenTK_3DVisualiser_Fast();
 
-            //fastFunction.action = dataOpenTk_3DVisualiserFast.GetData;
+            fastFunction.Update = dataOpenTk_3DVisualiserFast.GetData;
+
+            
 
             Thread thread = new Thread(fastFunction.EulerMethodRun);
             thread.Start();
 
+            
+
             dataOpenTk_3DVisualiserFast.Run(50);
 
+sw.Stop();
+
+            Console.WriteLine(sw.ElapsedTicks);
+
+            Console.Read();
         }
     }
 }
