@@ -17,7 +17,7 @@ namespace GravitatioanlSimulation
 
         static void Main(string[] args)
         {
-            Test11();
+            Test7_2();
     
             Console.Read();
         }
@@ -575,5 +575,52 @@ sw.Stop();
 
             Console.Read();
         }
+
+
+
+        //3d + DrawArrays
+        static void Test7_2()
+        {
+            CelestialObject sun = new CelestialObject(5E12, new double[] { 0, 0, 0 }, new double[] { 0, 0, 0 }, Color.OrangeRed);
+            PoolOfSelectialObject pool = new PoolOfSelectialObject();
+
+            pool.Add(sun);
+
+            Random random = new Random();
+
+            for (int i = 0; i < 500; i++)
+            {
+                pool.Add(new CelestialObject(random.Next(50, 100),
+                    new double[]
+                    { 
+                    RandomSumbol(random) * random.Next(1, 300),
+                    RandomSumbol(random) * random.Next(1, 300),
+                    RandomSumbol(random) * random.Next(1, 300) 
+                    },
+                    new double[]
+                    {
+                        RandomSumbol(random) * random.NextDouble(), 
+                        RandomSumbol(random) * random.NextDouble(),
+                        RandomSumbol(random) * random.NextDouble()
+                    }, GetRandomColor(random)));
+            }
+
+
+            Function function = new Function(pool.Objects, 3);
+
+            SystemOfBodies systemOfBodies = new SystemOfBodies(pool.Objects, new EulerMethod(function.Solve, pool._initialValues.ToArray(), 0.1));
+
+            DataOpenTK_3DVisualiser_DrawArrays dataOpenTk_3DVisualizer = new DataOpenTK_3DVisualiser_DrawArrays();
+
+            systemOfBodies.action = dataOpenTk_3DVisualizer.GetData;
+            //systemOfBodies.Update = GetData;
+            systemOfBodies.UpdatePositionOfObjects();
+            dataOpenTk_3DVisualizer.Run(50);
+
+        }
+
+
+
+
     }
 }

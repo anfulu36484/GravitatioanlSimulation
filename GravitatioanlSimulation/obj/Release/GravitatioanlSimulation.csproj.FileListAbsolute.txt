@@ -7,3 +7,4 @@ D:\С_2013\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\OpenTK.dl
 D:\С_2013\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\OpenTK.GLControl.dll
 D:\С_2013\GravitatioanlSimulation\GravitatioanlSimulation\obj\Release\GravitatioanlSimulation.exe
 D:\С_2013\GravitatioanlSimulation\GravitatioanlSimulation\obj\Release\GravitatioanlSimulation.pdb
+D:\С_2013\GravitatioanlSimulation\GravitatioanlSimulation\obj\Release\GravitatioanlSimulation.csprojResolveAssemblyReference.cache
