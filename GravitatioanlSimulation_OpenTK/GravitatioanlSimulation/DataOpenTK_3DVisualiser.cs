@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
@@ -106,7 +107,6 @@ namespace GravitatioanlSimulation
 				"FPS   : " + FPSCounter.FPS,
 				"Stars : " + _model.dimension
 			});
-
 
             SwapBuffers();
         }
