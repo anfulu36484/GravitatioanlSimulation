@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GravitatioanlSimulation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("KrotySOFT")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GravitatioanlSimulation")]
-[assembly: AssemblyCopyright("Copyright © KrotySOFT 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

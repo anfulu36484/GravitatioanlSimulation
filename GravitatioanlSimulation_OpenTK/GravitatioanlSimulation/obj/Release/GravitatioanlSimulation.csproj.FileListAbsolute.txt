@@ -1,0 +1,9 @@
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\GravitatioanlSimulation.exe.config
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\GravitatioanlSimulation.exe
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\GravitatioanlSimulation.pdb
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\Microsoft.DirectX.dll
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\OpenTK.Compatibility.dll
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\OpenTK.dll
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\OpenTK.GLControl.dll
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\obj\Release\GravitatioanlSimulation.exe
+D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation\GravitatioanlSimulation\obj\Release\GravitatioanlSimulation.pdb
