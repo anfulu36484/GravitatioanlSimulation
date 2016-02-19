@@ -11,21 +11,17 @@ namespace GravitatioanlSimulation
     class RenderOpenTK:MyGameWindow
     {
         private readonly Model _model;
-        private VideoFileWriter _videoFileWriterwriter;
+        private IWriter _writer;
        
 
 
         /// <summary>Creates a 1200x1000 window with the specified title.</summary>
-        public RenderOpenTK(Model model)
+        public RenderOpenTK(Model model, IWriter writer)
             : base(1200, 1000, GraphicsMode.Default, "Gravitatioanl Simulation")
         {
             _model = model;
-            _videoFileWriterwriter = new VideoFileWriter();
-
-            
-
-
-            _videoFileWriterwriter.Open("Simulation.avi", Width, Height, 25, VideoCodec.MPEG4, 100000000);
+            _writer = writer;
+            _writer.Initialization("output.gif",Width,Height);
         }
 
         /// <summary>Load resources here.</summary>
@@ -86,7 +82,7 @@ namespace GravitatioanlSimulation
                 GL.ReadPixels(0, 0, Width, Height, OpenTK.Graphics.PixelFormat.Bgr, PixelType.UnsignedByte, bmpData.Scan0);
                 snapShotBmp.UnlockBits(bmpData);
                 //snapShotBmp.Save(string.Format(@"D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation_VideoGenerator\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\result\image{0}.png",number));
-                _videoFileWriterwriter.WriteVideoFrame(snapShotBmp);
+                _writer.Write(snapShotBmp);
             }
             catch (Exception ex)
             {
@@ -99,7 +95,7 @@ namespace GravitatioanlSimulation
 
         public void Stop()
         {
-            _videoFileWriterwriter.Close();
+            _writer.SaveResult();
         }
     }
 }

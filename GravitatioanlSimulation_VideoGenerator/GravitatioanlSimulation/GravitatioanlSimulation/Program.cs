@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using GravitatioanlSimulation.Writer;
 
 namespace GravitatioanlSimulation
 {
@@ -7,15 +8,14 @@ namespace GravitatioanlSimulation
     {
         static void Main(string[] args)
         {
-
-            RenderOpenTK renderOpenTk = new RenderOpenTK(new ModelGenerator8().Generate());
+            RenderOpenTK renderOpenTk = new RenderOpenTK(new ModelGenerator1().Generate(),new GifWriter());
 
             renderOpenTk.Run();
             Stopwatch sw = new Stopwatch();
             
             sw.Start();
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 1000; i++)
             {
 
                 renderOpenTk.Render(i);
