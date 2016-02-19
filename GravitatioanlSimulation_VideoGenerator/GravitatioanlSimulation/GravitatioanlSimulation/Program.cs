@@ -8,18 +8,18 @@ namespace GravitatioanlSimulation
     {
         static void Main(string[] args)
         {
-            RenderOpenTK renderOpenTk = new RenderOpenTK(new ModelGenerator1().Generate(),new GifWriter());
+            RenderOpenTK renderOpenTk = new RenderOpenTK(new ModelGenerator9().Generate(),new GifWriter());
 
             renderOpenTk.Run();
             Stopwatch sw = new Stopwatch();
             
             sw.Start();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 3000; i++)
             {
 
                 renderOpenTk.Render(i);
-                Console.WriteLine(i);
+                //Console.WriteLine(i);
                 
             }
             renderOpenTk.Stop();

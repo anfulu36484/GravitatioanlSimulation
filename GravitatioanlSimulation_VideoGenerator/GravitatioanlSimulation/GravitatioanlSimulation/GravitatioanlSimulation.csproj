@@ -160,6 +160,7 @@
   <ItemGroup>
     <Compile Include="GameWindow.cs" />
     <Compile Include="IModelGenerator.cs" />
+    <Compile Include="ModelGenerator9.cs" />
     <Compile Include="Writer\GifWriter.cs" />
     <Compile Include="Writer\IWriter.cs" />
     <Compile Include="Model.cs" />
