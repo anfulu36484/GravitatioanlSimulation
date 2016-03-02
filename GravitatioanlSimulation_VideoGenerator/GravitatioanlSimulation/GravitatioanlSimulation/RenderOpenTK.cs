@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AForge.Video.FFMPEG;
 using OpenTK;
 using OpenTK.Graphics;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 
 namespace GravitatioanlSimulation
@@ -12,7 +15,6 @@ namespace GravitatioanlSimulation
     {
         private readonly Model _model;
         private IWriter _writer;
-       
 
 
         /// <summary>Creates a 1200x1000 window with the specified title.</summary>
@@ -22,7 +24,11 @@ namespace GravitatioanlSimulation
             _model = model;
             _writer = writer;
             _writer.Initialization("output.gif",Width,Height);
+
         }
+
+
+
 
         /// <summary>Load resources here.</summary>
         /// <param name="e">Not used.</param>
@@ -73,16 +79,29 @@ namespace GravitatioanlSimulation
             SwapBuffers();
         }
 
+        
+
         void GetSnapShot(int number)
         {
             try
             {
-                var snapShotBmp = new Bitmap(Width, Height);
-                BitmapData bmpData = snapShotBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                GL.ReadPixels(0, 0, Width, Height, OpenTK.Graphics.PixelFormat.Bgr, PixelType.UnsignedByte, bmpData.Scan0);
-                snapShotBmp.UnlockBits(bmpData);
+                //var snapShotBmp = new Bitmap(Width, Height);
+                //BitmapData bmpData = snapShotBmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                byte[] array = new byte[Width * Height * 3];
+                GCHandle bitsHandle = GCHandle.Alloc(array, GCHandleType.Pinned);
+                IntPtr pointer = bitsHandle.AddrOfPinnedObject();
+
+                GL.ReadPixels(0, 0, Width, Height, OpenTK.Graphics.PixelFormat.Bgr, PixelType.UnsignedByte, pointer);
+
+                Bitmap bitmap = new Bitmap(Width, Height, Width * 3, PixelFormat.Format24bppRgb, bitsHandle.AddrOfPinnedObject());
+
                 //snapShotBmp.Save(string.Format(@"D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation_VideoGenerator\GravitatioanlSimulation\GravitatioanlSimulation\bin\Release\result\image{0}.png",number));
-                _writer.Write(snapShotBmp);
+                _writer.Write(bitmap);
+
+                bitsHandle.Free();
+                bitmap.Dispose();
+
             }
             catch (Exception ex)
             {
