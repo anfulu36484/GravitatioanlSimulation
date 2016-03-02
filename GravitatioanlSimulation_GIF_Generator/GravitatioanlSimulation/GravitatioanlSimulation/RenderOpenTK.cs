@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using OpenTK;
 using OpenTK.Graphics;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -78,7 +80,23 @@ namespace GravitatioanlSimulation
             SwapBuffers();
         }
 
-        
+        /*private double size2 = 0;
+        void GetSizeImageinBytes(object bitmap)
+        {
+            long size = 0;
+
+            using (Stream stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, bitmap);
+                //Console.WriteLine((float)stream.Length/1024);
+                size2 += (double)stream.Length/(1024.0*1024.0);
+                Console.WriteLine(size2);
+            }
+        }*/
+
+        //Image[] bitmaps = new Image[300];
+        //private int index = 0;
 
         void GetSnapShot(int number)
         {
@@ -89,7 +107,15 @@ namespace GravitatioanlSimulation
                 GL.ReadPixels(0, 0, Width, Height, OpenTK.Graphics.PixelFormat.Bgr, PixelType.UnsignedByte, bmpData.Scan0);
                 snapShotBmp.UnlockBits(bmpData);
                 //snapShotBmp.Save(string.Format(@"D:\С_2015\GravitatioanlSimulation\GravitatioanlSimulation_VideoGenerator\GravitatioanlSimulation 2\GravitatioanlSimulation\bin\x64\Release\result\image{0}.png", number));
+
+                //GetSizeImageinBytes(bmpData);
+
+                //bitmaps[index] = (Image)snapShotBmp.Clone();
+                //index++;
+                
+
                 _writer.Write(snapShotBmp);
+                //snapShotBmp.Dispose();
 
             }
             catch (Exception ex)
@@ -105,6 +131,8 @@ namespace GravitatioanlSimulation
         public void Stop()
         {
             _writer.SaveResult();
+
+
         }
     }
 }

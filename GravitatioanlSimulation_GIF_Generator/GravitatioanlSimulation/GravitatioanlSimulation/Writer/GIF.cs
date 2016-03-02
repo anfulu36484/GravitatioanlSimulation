@@ -1,7 +1,5 @@
-﻿//http://stackoverflow.com/questions/1196322/how-to-create-an-animated-gif-in-net
+﻿//based on http://stackoverflow.com/questions/1196322/how-to-create-an-animated-gif-in-net
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,7 +7,7 @@ using System.IO;
 /// <summary>
 /// Uses default .net GIF encoding and adds animation headers.
 /// </summary>
-public class Gif : IDisposable, IEnumerable<Image>
+public class Gif : IDisposable
 {
     #region Header Constants
     const byte FileTrailer = 0x3b,
@@ -47,38 +45,24 @@ public class Gif : IDisposable, IEnumerable<Image>
         public int XOffset, YOffset;
     }
 
-    List<GifFrame> Frames = new List<GifFrame>();
+    MemoryStream dataStream = new MemoryStream();
+    private BinaryWriter Writer;
 
-    public Gif() { DefaultFrameDelay = 100; }
-
-    public Gif(Stream InStream, int Repeat = 0, int Delay = 500)
+    public Gif()
     {
-        using (Image Animation = Bitmap.FromStream(InStream))
-        {
-            int Length = Animation.GetFrameCount(FrameDimension.Time);
+        DefaultFrameDelay = 100;
+        dataStream = new MemoryStream();
+        Writer = new BinaryWriter(dataStream);
 
-            DefaultFrameDelay = Delay;
-            this.Repeat = Repeat;
-
-            for (int i = 0; i < Length; ++i)
-            {
-                Animation.SelectActiveFrame(FrameDimension.Time, i);
-
-                var Frame = new Bitmap(Animation.Size.Width, Animation.Size.Height);
-
-                Graphics.FromImage(Frame).DrawImage(Animation, new Point(0, 0));
-
-                Frames.Add(new GifFrame(Frame, Delay, 0, 0));
-            }
-        }
     }
+
+   
 
     #region Properties
     public int DefaultWidth { get; set; }
 
     public int DefaultHeight { get; set; }
-
-    public int Count { get { return Frames.Count; } }
+    
 
     /// <summary>
     /// Default Delay in Milliseconds
@@ -88,6 +72,9 @@ public class Gif : IDisposable, IEnumerable<Image>
     public int Repeat { get; private set; }
     #endregion
 
+
+    private int countOfFrame = 0;
+
     /// <summary>
     /// Adds a frame to this animation.
     /// </summary>
@@ -96,41 +83,32 @@ public class Gif : IDisposable, IEnumerable<Image>
     /// <param name="YOffset">The positioning y offset this image should be displayed at.</param>
     public void AddFrame(Image Image, double? frameDelay = null, int XOffset = 0, int YOffset = 0)
     {
-        Frames.Add(new GifFrame(Image, frameDelay ?? DefaultFrameDelay, XOffset, YOffset));
+
+        using (var gifStream = new MemoryStream())
+        {
+            GifFrame Frame = new GifFrame(Image, frameDelay ?? DefaultFrameDelay, XOffset, YOffset);
+
+            Frame.Image.Save(gifStream, ImageFormat.Gif);
+
+            // Steal the global color table info
+            if (countOfFrame == 0) InitHeader(gifStream, Writer, Frame.Image.Width, Frame.Image.Height);
+
+            WriteGraphicControlBlock(gifStream, Writer, Frame.Delay);
+            WriteImageBlock(gifStream, Writer, countOfFrame != 0, Frame.XOffset, Frame.YOffset, Frame.Image.Width, Frame.Image.Height);
+            countOfFrame++;
+        }
+
+        Image.Dispose();
     }
 
-    public void AddFrame(string FilePath, double? frameDelay = null, int XOffset = 0, int YOffset = 0)
-    {
-        AddFrame(new Bitmap(FilePath), frameDelay, XOffset, YOffset);
-    }
 
-    public void RemoveAt(int Index) { Frames.RemoveAt(Index); }
-
-    public void Clear() { Frames.Clear(); }
 
     public void Save(Stream OutStream)
     {
-        using (var Writer = new BinaryWriter(OutStream))
-        {
-            for (int i = 0; i < Count; ++i)
-            {
-                var Frame = Frames[i];
+        // Complete File
+        Writer.Write(FileTrailer);
 
-                using (var gifStream = new MemoryStream())
-                {
-                    Frame.Image.Save(gifStream, ImageFormat.Gif);
-
-                    // Steal the global color table info
-                    if (i == 0) InitHeader(gifStream, Writer, Frame.Image.Width, Frame.Image.Height);
-
-                    WriteGraphicControlBlock(gifStream, Writer, Frame.Delay);
-                    WriteImageBlock(gifStream, Writer, i != 0, Frame.XOffset, Frame.YOffset, Frame.Image.Width, Frame.Image.Height);
-                }
-            }
-
-            // Complete File
-            Writer.Write(FileTrailer);
-        }
+        dataStream.WriteTo(OutStream);
     }
 
     #region Write
@@ -222,13 +200,10 @@ public class Gif : IDisposable, IEnumerable<Image>
 
     public void Dispose()
     {
-        Frames.Clear();
-        Frames = null;
+        Writer.Close();
+        Writer.Dispose();
+        dataStream.Close();
+        dataStream.Dispose();
     }
 
-    public Image this[int Index] { get { return Frames[Index].Image; } }
-
-    public IEnumerator<Image> GetEnumerator() { foreach (var Frame in Frames) yield return Frame.Image; }
-
-    IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 }

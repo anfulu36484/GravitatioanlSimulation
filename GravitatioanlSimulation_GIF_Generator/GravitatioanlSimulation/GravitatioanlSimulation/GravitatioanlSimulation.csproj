@@ -105,9 +105,8 @@
     <Compile Include="GameWindow.cs" />
     <Compile Include="IModelGenerator.cs" />
     <Compile Include="ModelGenerator9.cs" />
-    <Compile Include="Writer\GIF.cs" />
+    <Compile Include="Writer\Gif.cs" />
     <Compile Include="Writer\GifWriter2.cs" />
-    <Compile Include="Writer\GifWriter.cs" />
     <Compile Include="Writer\IWriter.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelGenerator8.cs" />
