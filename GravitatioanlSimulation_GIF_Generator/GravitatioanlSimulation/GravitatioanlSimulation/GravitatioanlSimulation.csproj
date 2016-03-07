@@ -102,22 +102,28 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameWindow.cs" />
-    <Compile Include="IModelGenerator.cs" />
-    <Compile Include="ModelGenerator9.cs" />
+    <Compile Include="IRender.cs" />
+    <Compile Include="Models\3D\GameWindow.cs" />
+    <Compile Include="Models\2D\2DRendrer.cs" />
+    <Compile Include="Models\2D\IModelGenerator.cs" />
+    <Compile Include="Models\2D\Model2D.cs" />
+    <Compile Include="Models\2D\Model2DGenerator1.cs" />
+    <Compile Include="Models\3D\IModel3DGenerator.cs" />
+    <Compile Include="Models\3D\Model3DGenerator9.cs" />
+    <Compile Include="Writer\FastBitmapCreator.cs" />
     <Compile Include="Writer\Gif.cs" />
-    <Compile Include="Writer\GifWriter2.cs" />
+    <Compile Include="Writer\GifWriter.cs" />
     <Compile Include="Writer\IWriter.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="ModelGenerator8.cs" />
-    <Compile Include="ModelGenerator7.cs" />
-    <Compile Include="ModelGenerator6.cs" />
-    <Compile Include="ModelGenerator1.cs" />
-    <Compile Include="ModelGenerator2.cs" />
-    <Compile Include="ModelGenerator3.cs" />
-    <Compile Include="ModelGenerator4.cs" />
-    <Compile Include="ModelGenerator5.cs" />
-    <Compile Include="RenderOpenTK.cs" />
+    <Compile Include="Models\3D\Model3D.cs" />
+    <Compile Include="Models\3D\Model3DGenerator8.cs" />
+    <Compile Include="Models\3D\Model3DGenerator7.cs" />
+    <Compile Include="Models\3D\Model3DGenerator6.cs" />
+    <Compile Include="Models\3D\Model3DGenerator1.cs" />
+    <Compile Include="Models\3D\Model3DGenerator2.cs" />
+    <Compile Include="Models\3D\Model3DGenerator3.cs" />
+    <Compile Include="Models\3D\Model3DGenerator4.cs" />
+    <Compile Include="Models\3D\Model3DGenerator5.cs" />
+    <Compile Include="Models\3D\RenderOpenTK.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -133,6 +139,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

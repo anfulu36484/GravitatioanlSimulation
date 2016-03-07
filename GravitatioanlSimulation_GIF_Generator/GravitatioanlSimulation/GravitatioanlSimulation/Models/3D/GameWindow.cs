@@ -32,10 +32,11 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using OpenTK.Platform;
+
 #if !MINIMAL
 #endif
 
-namespace GravitatioanlSimulation
+namespace GravitatioanlSimulation.Models._3D
 {
     /// <summary>
     /// The GameWindow class contains cross-platform methods to create and render on an OpenGL

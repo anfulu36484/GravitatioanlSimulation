@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GravitatioanlSimulation.Writer
 {
-    class GifWriter2:IWriter
+    class GifWriter:IWriter
     {
         private Gif gif;
 

@@ -1,9 +1,9 @@
-﻿using OpenTK;
-using System.Drawing;
+﻿using System.Drawing;
+using OpenTK;
 
-namespace GravitatioanlSimulation
+namespace GravitatioanlSimulation.Models._3D
 {
-    class Model
+    class Model3D
     {
         public Vector3[] r;
         public Vector3[] v;
@@ -19,7 +19,7 @@ namespace GravitatioanlSimulation
 
         public int dimension;
 
-        public Model(Vector3[] r, Vector3[] v, float[] m, Color[] color)
+        public Model3D(Vector3[] r, Vector3[] v, float[] m, Color[] color)
         {
             this.r = r;
             this.v = v;

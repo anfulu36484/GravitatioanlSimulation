@@ -59,6 +59,7 @@
     <Compile Include="3D\Model3D.cs" />
     <Compile Include="3D\ModelGenerator1.cs" />
     <Compile Include="Descriptor.cs" />
+    <Compile Include="Generators\Velocity\IVelocityGenerator.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelGenerator.cs" />

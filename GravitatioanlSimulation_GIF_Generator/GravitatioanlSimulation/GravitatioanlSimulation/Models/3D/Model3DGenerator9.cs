@@ -2,15 +2,15 @@
 using System.Drawing;
 using OpenTK;
 
-namespace GravitatioanlSimulation
+namespace GravitatioanlSimulation.Models._3D
 {
-    class ModelGenerator9:IModelGenerator
+    class Model3DGenerator9:IModel3DGenerator
     {
         private Random random;
 
 
 
-        public ModelGenerator9()
+        public Model3DGenerator9()
         {
             random = new Random();
         }
@@ -43,7 +43,7 @@ namespace GravitatioanlSimulation
                                r * (float)Math.Cos(θ));
         }
 
-        public Model Generate()
+        public Model3D Generate()
         {
             int count = 1000;
             Vector3[] v = new Vector3[count];
@@ -61,10 +61,10 @@ namespace GravitatioanlSimulation
                 m[i] = random.Next(10000, 100000);
                 color[i] = Color.FromArgb(random.Next(100, 200), random.Next(100, 200), random.Next(100, 200));
             }
-            Model model = new Model(r, v, m, color);
-            model.G = 0.00001f;
+            Model3D model3D = new Model3D(r, v, m, color);
+            model3D.G = 0.00001f;
 
-            return model;
+            return model3D;
         }
     }
 }

@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using OpenTK;
 using OpenTK.Graphics;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-
-namespace GravitatioanlSimulation
+namespace GravitatioanlSimulation.Models._3D
 {
-    class RenderOpenTK:MyGameWindow
+    class RenderOpenTK:MyGameWindow, IRender
     {
-        private readonly Model _model;
+        private readonly Model3D _model3D;
         private IWriter _writer;
 
 
         /// <summary>Creates a 1200x1000 window with the specified title.</summary>
-        public RenderOpenTK(Model model, IWriter writer)
+        public RenderOpenTK(Model3D model3D, IWriter writer)
             : base(1200, 1000, GraphicsMode.Default, "Gravitatioanl Simulation")
         {
-            _model = model;
+            _model3D = model3D;
             _writer = writer;
             _writer.Initialization("output.gif",Width,Height);
 
@@ -51,7 +45,7 @@ namespace GravitatioanlSimulation
 
 
 
-        public void Render(int number)
+        public void Render()
         {
             OnRenderFrame(new FrameEventArgs(1));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -66,17 +60,17 @@ namespace GravitatioanlSimulation
 
             GL.Begin(BeginMode.Points);
 
-            for (int i = 0; i < _model.dimension; i++)
+            for (int i = 0; i < _model3D.dimension; i++)
             {
-                GL.Color3(_model.color[i]);
-                GL.Vertex3(_model.r[i]);
+                GL.Color3(_model3D.color[i]);
+                GL.Vertex3(_model3D.r[i]);
             }
 
-            _model.NextStep();
+            _model3D.NextStep();
 
             GL.End();
 
-            GetSnapShot(number);
+            GetSnapShot();
             SwapBuffers();
         }
 
@@ -98,7 +92,7 @@ namespace GravitatioanlSimulation
         //Image[] bitmaps = new Image[300];
         //private int index = 0;
 
-        void GetSnapShot(int number)
+        void GetSnapShot()
         {
             try
             {
